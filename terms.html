@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Draft Terms of Service for TikTok-AI-Agent for Windows.">
+  <title>Terms of Service — TikTok-AI-Agent (Draft)</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, Segoe UI, sans-serif; color: #17212b; background: #f4f7fa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.7; }
+    header, main, footer { width: min(100% - 2rem, 58rem); margin-inline: auto; }
+    header { padding: 2rem 0 1rem; }
+    main { padding: 1rem 0 3rem; }
+    footer { padding: 1.5rem 0 2rem; border-top: 1px solid #ccd6df; }
+    h1, h2 { line-height: 1.25; }
+    a { color: #0645ad; }
+    .notice { padding: 1rem 1.2rem; border: 2px solid #a34b00; border-radius: .5rem; background: #fff4e8; }
+    code { overflow-wrap: anywhere; }
+    nav ul { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0; list-style: none; }
+    .details { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; }
+    @media (max-width: 36rem) { .details { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Site navigation"><a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a></nav>
+    <h1>Terms of Service — Draft</h1>
+    <aside class="notice"><strong>DRAFT ONLY — NOT READY TO PUBLISH OR USE AS A CONTRACT.</strong> This document contains required placeholders and needs review by the operator and qualified counsel for the intended jurisdictions. No operator identity, address, public website, governing law, or legal warranty has been assumed.</aside>
+    <dl class="details">
+      <dt>Service</dt><dd>TikTok-AI-Agent for Windows</dd>
+      <dt>Service operator</dt><dd><code>[REQUIRED: operator's legal name]</code></dd>
+      <dt>Effective date</dt><dd><code>[REQUIRED: date]</code></dd>
+      <dt>Contact</dt><dd><code>[REQUIRED: support/privacy contact email or other monitored contact method]</code></dd>
+    </dl>
+  </header>
+  <main>
+    <section>
+      <h2>1. About the application</h2>
+      <p>TikTok-AI-Agent is a Windows desktop application and command-line tool for scanning a user-selected local video folder, preparing vertical MP4/H.264 video parts, making editable caption and hashtag drafts, optionally generating subtitles with locally installed Whisper.cpp software and a local model, and—when separately enabled and authorized—sending a selected video to TikTok through TikTok's official Login Kit and Content Posting API.</p>
+      <p>The application processes media on the user's computer. It does not provide a hosted video-processing service. TikTok login, authorization, creator-settings, upload, and post-status requests communicate with TikTok.</p>
+    </section>
+    <section>
+      <h2>2. Requirements and account access</h2>
+      <p>The user supplies and maintains a supported Windows computer and any required local software, including Python and FFmpeg/FFprobe. TikTok features require a TikTok account, a developer application configured by the operator, applicable TikTok product and scope approvals, and user authorization. Availability also depends on TikTok's current rules, API behavior, account settings, and limits. The operator has not represented that the developer application is approved for public posting.</p>
+      <p>The operator must complete this section before publication: <code>[REQUIRED: intended-user eligibility and minimum-age terms, reviewed for applicable law and TikTok requirements]</code>.</p>
+    </section>
+    <section>
+      <h2>3. User videos, captions, and rights</h2>
+      <p>The user remains responsible for the videos, audio, subtitles, captions, and other material selected for processing or posting. The user must have the rights and permissions needed for those actions and must follow applicable law and TikTok's terms, policies, and content rules. Cropping, reframing, splitting, adding subtitles, or changing a caption does not itself grant permission to use someone else's work.</p>
+      <p>The application records a rights basis such as original, licensed, other lawful basis, or unverified. Unverified or uncertain material is not eligible for publishing until the user records a supported rights basis and completes any required manual review. The application does not decide whether a particular use is lawful.</p>
+      <p>The application creates editable caption drafts and filename-based hashtag suggestions. The user must review and approve the caption and video before any post. The user is responsible for accuracy, disclosure, music-use choices, and the final content.</p>
+    </section>
+    <section>
+      <h2>4. Local processing and original files</h2>
+      <p>Scanning reads supported files and records their path, size, and content hash to identify duplicate jobs. Processing reads the source video and writes separate processed output; the source file is not changed by normal processing. Optional subtitle generation uses a locally installed Whisper.cpp executable and an existing local model. Temporary audio is created on the computer for that operation.</p>
+      <p>The user should keep their own backups. Local files may be affected by the user's Windows account, storage, backup, antivirus, synchronization, or other software outside this application's control.</p>
+    </section>
+    <section>
+      <h2>5. TikTok authorization and posting</h2>
+      <p>TikTok Login Kit is used to obtain user authorization. The desktop authorization flow opens TikTok in the system browser, validates a single-use OAuth state value, uses PKCE, and receives the authorization response at the configured loopback address on the user's computer. The application stores returned access and refresh tokens locally in a Windows DPAPI-protected file. An app client secret entered through the hidden prompt can also be stored using current-user DPAPI. If the user instead configures a secret in an environment variable or <code>.env</code> file, the application does not encrypt that configuration file.</p>
+      <p>Publishing is disabled by default. Before a post, the application checks the stored <code>video.publish</code> grant and configured operator confirmations for app audit and scope approval, obtains current creator settings from TikTok, validates the video and duration, and requires the user to review the video and caption and confirm rights, music use, privacy, and the other selected post options. The user must give explicit per-post consent and type <code>POST</code> for that upload. A missing permission, approval confirmation, creator eligibility, valid setting, or consent blocks the post. Operator confirmation settings cannot grant TikTok approval or replace actual user authorization.</p>
+      <p>When the user confirms a post, the application sends the selected video and post information to TikTok, then polls TikTok for upload/post status. TikTok controls whether a post is accepted, processed, restricted, or made visible. No successful publication or particular audience reach is promised.</p>
+      <p>The user must follow TikTok's current developer terms, Content Posting API requirements, and content-sharing guidelines. The application does not automate TikTok's website or bypass API approval or restrictions.</p>
+    </section>
+    <section>
+      <h2>6. Local cleanup</h2>
+      <p>After TikTok confirms a successful publication, the application can record a local cleanup eligibility time, normally 24 hours later. Eligibility is not an automatic deletion guarantee. The current defaults disable cleanup (<code>CLEANUP_ENABLED=false</code>) and use dry-run mode (<code>CLEANUP_DRY_RUN=true</code>). The installed Windows scheduled task, if present, runs only <code>run_agent.ps1 cleanup dry-run</code>; that task reports eligible files and does not delete them.</p>
+      <p>Actual removal requires the user/operator to change the relevant cleanup settings and explicitly run the cleanup execution command. Deleting original input files has a separate opt-in setting (<code>CLEANUP_SOURCE_FILES</code>) and is disabled by default. Local cleanup does not remove a video already sent to TikTok or erase the application's database, caption drafts, or post history. The operator must verify these implementation details and current defaults before publishing this draft.</p>
+    </section>
+    <section>
+      <h2>7. Third-party services</h2>
+      <p>TikTok is a third-party service. Use of TikTok, including authorization and content posting, is subject to TikTok's own terms and privacy notices. TikTok may change its API, supported scopes, review requirements, creator settings, limits, or service availability. The operator does not control those decisions.</p>
+    </section>
+    <section>
+      <h2>8. Changes, termination, and legal terms</h2>
+      <p><code>[REQUIRED: operator's process for updates, suspension/termination, notices, and handling previously stored local data]</code></p>
+      <p><code>[REQUIRED: governing law, venue, and any other contract provisions selected by the operator and reviewed for applicable law. Do not publish with this placeholder.]</code></p>
+    </section>
+    <section>
+      <h2>9. Contact</h2>
+      <p>Questions about these terms: <code>[REQUIRED: monitored contact method]</code>.</p>
+    </section>
+  </main>
+  <footer><nav aria-label="Footer navigation"><a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a></nav></footer>
+</body>
+</html>

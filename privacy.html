@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Draft Privacy Policy for TikTok-AI-Agent for Windows.">
+  <title>Privacy Policy — TikTok-AI-Agent (Draft)</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, Segoe UI, sans-serif; color: #17212b; background: #f4f7fa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.7; }
+    header, main, footer { width: min(100% - 2rem, 58rem); margin-inline: auto; }
+    header { padding: 2rem 0 1rem; }
+    main { padding: 1rem 0 3rem; }
+    footer { padding: 1.5rem 0 2rem; border-top: 1px solid #ccd6df; }
+    h1, h2, h3 { line-height: 1.25; }
+    a { color: #0645ad; }
+    .notice { padding: 1rem 1.2rem; border: 2px solid #a34b00; border-radius: .5rem; background: #fff4e8; }
+    code { overflow-wrap: anywhere; }
+    nav ul { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0; list-style: none; }
+    .details { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; }
+    @media (max-width: 36rem) { .details { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Site navigation"><a href="index.html">Home</a> · <a href="terms.html">Terms of Service</a></nav>
+    <h1>Privacy Policy — Draft</h1>
+    <aside class="notice"><strong>DRAFT ONLY — NOT READY TO PUBLISH.</strong> The operator's identity, contact method, jurisdiction-specific notices, and hosting URL are unknown and remain placeholders. Verify this description against the exact release, enabled configuration, installed integrations, and applicable law before publishing.</aside>
+    <dl class="details">
+      <dt>Application</dt><dd>TikTok-AI-Agent for Windows</dd>
+      <dt>Operator</dt><dd><code>[REQUIRED: operator's legal name]</code></dd>
+      <dt>Effective date</dt><dd><code>[REQUIRED: date]</code></dd>
+      <dt>Privacy contact</dt><dd><code>[REQUIRED: monitored privacy contact email or other method]</code></dd>
+    </dl>
+  </header>
+  <main>
+    <section>
+      <h2>1. Scope and operation</h2>
+      <p>TikTok-AI-Agent is a Windows desktop application and command-line tool. Its video scanning, conversion, segmentation, caption drafting, and optional transcription run on the user's computer. No project-hosted processing backend is part of the reviewed implementation. TikTok is contacted only for an OAuth flow or when the user invokes TikTok account/API functions; a video is sent to TikTok only through a separately authorized and consent-controlled posting operation.</p>
+      <p>This policy describes the local data handling and TikTok connections found in the project. It does not describe Windows, TikTok, or other software's independent data practices.</p>
+    </section>
+    <section>
+      <h2>2. Data the application handles</h2>
+      <h3>Local video and job information</h3>
+      <p>When scanning and processing, the application reads supported video files from the configured input folder. It records information needed for job tracking and duplicate prevention, including the source file path, SHA-256 content hash, file size, rights declaration, job and part identifiers, status, timestamps, expected duration, output path, and caption-file path. It creates processed video parts and may read an SRT subtitle file when one is present.</p>
+      <h3>Captions and optional transcripts</h3>
+      <p>The application saves editable caption drafts as local JSON files. A draft can contain a title derived from the source filename, caption text, selected hashtags, filename-based hashtag suggestions, and a review flag. If the user invokes offline subtitle generation and has configured a local Whisper.cpp executable and model, the application creates a temporary audio file locally and produces an SRT transcript locally. The project does not send that audio to a paid transcription API.</p>
+      <h3>Database, events, and logs</h3>
+      <p>The local SQLite database records job/part state and event history. Depending on the operation, records can include file paths, rights declarations, publication status, TikTok publish identifiers, error details, and timestamps. A local post log can contain a part ID, publish ID, status, failure reason, TikTok post IDs returned by TikTok, and the check time. If the Windows cleanup task is installed, it appends dry-run output and safe error details to <code>data/cleanup-task.log</code>; output can identify local files or paths. Credential-like values are redacted by the task logger, but logs remain local files that the user should protect.</p>
+      <h3>OAuth credentials and tokens</h3>
+      <p>TikTok OAuth uses the configured client key, redirect URI, requested scope, a temporary state value, and a PKCE challenge. The authorization code is exchanged with TikTok for user tokens. The local token store contains the access token, refresh token, TikTok account identifier (<code>open_id</code>), granted scopes, and token-expiration information. These tokens are stored in <code>data/tiktok_tokens.dpapi</code> protected with Windows DPAPI for the current Windows user. A client secret entered at the hidden OAuth prompt can be stored in <code>data/tiktok_client_secret.dpapi</code> using current-user DPAPI.</p>
+      <p>The client secret can alternatively be supplied using <code>TIKTOK_CLIENT_SECRET</code> in the process environment or the project's <code>.env</code> configuration. Those configuration values are not encrypted by the application; protect the Windows account and files accordingly. The client key, secret, access token, and refresh token must not be included in public documents, support logs, or screenshots.</p>
+      <h3>TikTok creator settings and post data</h3>
+      <p>During a publish attempt, the application requests current creator information/settings from TikTok, including the account name/username presented for review, posting availability, privacy choices, maximum video duration, and comment/Duet/Stitch availability. If the user proceeds, TikTok receives the selected video and post information such as caption, privacy level, interaction options, and applicable branded-content or AI-generated-content selections. TikTok returns upload/post identifiers and status information that the application records locally.</p>
+    </section>
+    <section>
+      <h2>3. Why information is used</h2>
+      <p>The application uses local video and metadata to discover work, prevent duplicate processing, create and validate output, prepare editable captions, enforce rights and review gates, and maintain job, publication, and cleanup status. OAuth data is used to authorize TikTok API calls and refresh an expired access token when the refresh authorization remains valid. Creator settings are fetched to check whether the account can post and to present current allowed options. Post-status information is used to record the result and, after confirmed publication, determine local cleanup eligibility.</p>
+    </section>
+    <section>
+      <h2>4. Where information goes</h2>
+      <p>Before the user initiates OAuth or TikTok API operations, media processing and optional transcription take place locally. For OAuth, the system browser connects to TikTok and the authorization callback returns to the configured local loopback address. OAuth/token and creator-settings requests are sent to TikTok's official API. If the user gives per-post consent and the application's safeguards pass, the selected video and its post information are uploaded to TikTok. TikTok then handles that content under TikTok's own policies.</p>
+      <p>The reviewed implementation does not include a separate project-operated cloud service or paid AI API. Users may independently store the project folder in a synchronized or backed-up location; Windows, backup, sync, antivirus, and other installed software may handle local files under their own settings.</p>
+      <p><strong>Website hosting:</strong> These policy pages are intended to be hosted with GitHub Pages. GitHub states that it logs and stores visitors' IP addresses for security when a GitHub Pages site is visited. This website operator does not control GitHub's hosting logs. See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">GitHub's Pages data-collection notice</a> and <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement">GitHub's Privacy Statement</a> for the host's practices.</p>
+    </section>
+    <section>
+      <h2>5. Publishing choices and safeguards</h2>
+      <p>TikTok publishing is disabled by default. A post is blocked unless the configured approval gates are enabled, the stored OAuth grant includes <code>video.publish</code>, current creator settings permit the requested post, the video validates, the caption has been reviewed, rights and music-use confirmations are recorded, and the user completes the application's review and explicit per-post consent steps. The user selects from the current creator privacy options and confirms applicable interaction/content settings. The user types <code>POST</code> to authorize that one upload. Configuration flags are operator confirmations; they do not create TikTok approval or permissions.</p>
+      <p>This local application does not make TikTok's approval, visibility, or eligibility decisions. TikTok may reject a request or restrict a post, including based on app audit status, account settings, limits, or platform rules.</p>
+    </section>
+    <section>
+      <h2>6. Local storage and retention</h2>
+      <p>The project stores data in its configured local folders, by default including <code>input_videos</code>, <code>processed_parts</code>, <code>posting_queue</code>, <code>posted_logs</code>, <code>captions</code>, and <code>data</code>. The database, captions, post history, credentials, and local video files remain on the computer unless the user separately uploads, syncs, backs up, or moves them. No general automatic expiry period for the local database, captions, post logs, tokens, or unprocessed source videos is identified in the reviewed implementation.</p>
+      <p>After a confirmed successful TikTok publication, the cleanup feature can record processed-output files as eligible after the configured retention period (24 hours by default). The current defaults are <code>CLEANUP_ENABLED=false</code>, <code>CLEANUP_DRY_RUN=true</code>, and <code>CLEANUP_SOURCE_FILES=false</code>. The installed hourly Windows task runs only <code>run_agent.ps1 cleanup dry-run</code>, so it reports eligibility without deleting files. Actual cleanup requires cleanup to be separately enabled, dry-run to be disabled, and an explicit cleanup execution command. Source-file deletion is independently gated and off by default. Cleanup acts on local files; it does not delete TikTok posts. Verify these settings and behaviors against the release before publication.</p>
+      <p>Users can remove local project files, including the DPAPI token and client-secret files, database, logs, captions, and video output, using Windows file-management tools. Removing tokens locally does not itself revoke the grant at TikTok; authorization should also be revoked through TikTok's account/app authorization controls. The application does not provide a hosted account or an identified in-app privacy-request portal. Deleting a local file is not represented as secure erasure and may not remove copies retained by backups or sync software.</p>
+      <p>TikTok's retention and deletion of information received through OAuth and Content Posting API are governed by TikTok's own policies and controls.</p>
+    </section>
+    <section>
+      <h2>7. Security</h2>
+      <p>OAuth tokens and a client secret saved through the hidden prompt are protected at rest with Windows DPAPI for the current Windows user. The application also applies credential redaction to supported error/log paths. DPAPI and redaction do not protect data from compromise of the Windows account, malware or processes running as that user, exposed environment variables, unprotected <code>.env</code> files, backups, or every possible third-party diagnostic. Keep Windows access restricted and do not share the project data folder or credentials.</p>
+    </section>
+    <section>
+      <h2>8. Children's privacy and regional rights</h2>
+      <p><code>[REQUIRED: operator's intended age group and applicable children's-privacy approach]</code></p>
+      <p><code>[REQUIRED: identify the operator's relevant countries/regions and add the privacy rights, legal basis, controller/processor details, complaint route, and other notices required there. These cannot be completed accurately without the operator's location and intended audience.]</code></p>
+    </section>
+    <section>
+      <h2>9. Changes and contact</h2>
+      <p><code>[REQUIRED: how policy updates will be announced and when they take effect]</code></p>
+      <p>Privacy questions or requests: <code>[REQUIRED: monitored contact method]</code>.</p>
+    </section>
+  </main>
+  <footer><nav aria-label="Footer navigation"><a href="index.html">Home</a> · <a href="terms.html">Terms of Service</a></nav></footer>
+</body>
+</html>
